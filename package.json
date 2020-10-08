@@ -9,6 +9,8 @@
   "author": "Adrian Morban",
   "license": "ISC",
   "dependencies": {
-    "mongoose": "^5.10.8"
+    "express": "^4.17.1",
+    "mongoose": "^5.10.8",
+    "spdy": "^4.0.2"
   }
 }

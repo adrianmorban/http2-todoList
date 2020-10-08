@@ -4,7 +4,7 @@ class Task {
     constructor(ID, description, status, dueDate){
         this._id = ID;
         this.description = description;
-        this.status = statis;
+        this.status = status;
         this.dueDate = dueDate;
     }
 }

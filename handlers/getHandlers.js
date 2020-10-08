@@ -1,32 +1,34 @@
-const getAllTasks = (ItemModel, stream) => {
-    ItemModel.find({}, (err, tasks) => {
+const getAllTasks = (taskModel, res) => {
+    taskModel.find({}, (err, tasks) => {
         if (err) {
             console.log(err);
-            stream.respond({
-                'content-type': 'application/json',
-                ':status': 400
-            });
-            stream.end({
+            res.writeHead(400,undefined,{'content-type': 'application/json'})
+            res.end({
                 code: 400,
                 msg: 'Bad request'
             });
         } else {
-            stream.respond({
-                'content-type': 'application/json',
-                ':status': 200
-            });
-            stream.end(JSON.stringify(tasks));
+            res.writeHead(200,undefined,{'content-type': 'application/json'});
+            res.end(JSON.stringify(tasks));
         }
     })
 }
 
 //despues
-const getOneTask = (ItemModel, stream) => {
-    stream.respond({
-        'content-type': 'text/html; charset=utf-8',
-        ':status': 200
-    });
-    stream.end('<h1>Aqui ir[an las tareas</h1>');
+const getOneTask = (taskModel, res, id) => {
+    taskModel.findById(id, (err, tasks) => {
+        if (err) {
+            console.log(err);
+            res.writeHead(400,undefined,{'content-type': 'application/json'})
+            res.end({
+                code: 400,
+                msg: 'Bad request'
+            });
+        } else {
+            res.writeHead(200,undefined,{'content-type': 'application/json'});
+            res.end(JSON.stringify(tasks));
+        }
+    })
 }
 
 module.exports = {getAllTasks, getOneTask}
