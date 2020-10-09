@@ -1,33 +1,16 @@
+const {errorResponse, objectResponse} = require('../utility/responses');
+
 const getAllTasks = (taskModel, res) => {
     taskModel.find({}, (err, tasks) => {
-        if (err) {
-            console.log(err);
-            res.writeHead(400,undefined,{'content-type': 'application/json'})
-            res.end({
-                code: 400,
-                msg: 'Bad request'
-            });
-        } else {
-            res.writeHead(200,undefined,{'content-type': 'application/json'});
-            res.end(JSON.stringify(tasks));
-        }
+        if (err) errorResponse(err, res, 400, 'Bad request');
+        else objectResponse(res, 200, tasks);
     })
 }
 
-//despues
 const getOneTask = (taskModel, res, id) => {
     taskModel.findById(id, (err, tasks) => {
-        if (err) {
-            console.log(err);
-            res.writeHead(400,undefined,{'content-type': 'application/json'})
-            res.end({
-                code: 400,
-                msg: 'Bad request'
-            });
-        } else {
-            res.writeHead(200,undefined,{'content-type': 'application/json'});
-            res.end(JSON.stringify(tasks));
-        }
+        if (err) errorResponse(err, res, 400, 'Bad request');
+        else objectResponse(res, 200, tasks);
     })
 }
 

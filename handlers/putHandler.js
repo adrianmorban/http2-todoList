@@ -1,29 +1,24 @@
+const {errorResponse, objectResponse} = require('../utility/responses');
+const {updateLastVersion, getLastVersion} = require('../utility/versions');
 const { Task } = require("../models/tasks");
 
-const putHandler = (TaskModel, data, res, id) => { 
+const putHandler = (taskModel, data, res, id) => { 
     let taskV = new Task(id, data.description, data.status, data.dueDate);
+
     for (const property in taskV) {
-        if(property === undefined){
-            res.writeHead(400,undefined,{'content-type': 'application/json'})
-            res.end({
-                code: 400,
-                msg: 'Bad request'
-            });
+        if(taskV[property] === undefined){
+            errorResponse(undefined, res, 400, 'Bad request');
             return;
         }
     }
-    TaskModel.updateOne({_id: id},data,(err)=>{
-        if (err) {
-            res.writeHead(400,undefined,{'content-type': 'application/json'})
-            res.end({
-                code: 400,
-                msg: 'Bad request'
-            });
-        }
-        else {
-            res.writeHead(200,undefined,{'content-type': 'application/json'})
-            res.end(JSON.stringify(taskV));
-        }; 
+    getLastVersion().then((version) => {
+        taskModel.updateOne({_id: id}, data, (err)=>{
+            if (err) errorResponse(err, res, 400, 'Bad request');
+            else {
+                objectResponse(res, 200, {message: 'OK'});
+                updateLastVersion(version.lastVersion, version.lastId - 1);
+            };
+        })
     })
 }
 

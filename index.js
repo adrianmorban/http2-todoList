@@ -1,14 +1,19 @@
-//requires
+//requires dependencies
 const express = require('express');
 const spdy = require('spdy');
 const fs = require('fs');
+
+//requires handlers
 const {getAllTasks, getOneTask} = require('./handlers/getHandlers');
 const {postHandler} = require('./handlers/postHandler');
 const {putHandler} = require('./handlers/putHandler');
 const {deleteHandler} = require('./handlers/deleteHandler');
-const {patchHandler} = require('./handlers/patchHandler')
+const {patchHandler} = require('./handlers/patchHandler');
+
+//require configs
 const {Connection} = require('./config/connectDB');
 const {TaskSchema} = require('./models/tasks');
+const {createFirstVersion, getVersionModel} = require('./models/version');
 
 const app = express();
 
@@ -20,6 +25,10 @@ const options = {
         protocols: ['h2', 'spdy/3.1']
     }
 }
+
+getVersionModel().then(versionModel => {
+    createFirstVersion(versionModel);
+})
 
 const server = spdy.createServer(options, app);
 
@@ -53,13 +62,13 @@ Conectar.Connect()
                 let data = JSON.parse(chunk.toString());
                 putHandler(taskModel, data, res, id);
             });
-        })
+        });
 
         //DELETE
         app.delete('/api/task/:id', (req, res) => {
             let id = req.params.id;
             deleteHandler(taskModel, res, id);
-        })
+        });
 
         //PATCH
         app.patch('/api/task/:id', (req, res) => {
@@ -68,6 +77,14 @@ Conectar.Connect()
                 let data = JSON.parse(chunk.toString());
                 patchHandler(taskModel, data, res, id);
             });
+        });
+
+        app.head('/api/tasks', (req, res) => {
+
+        });
+
+        app.head('/api/task/:id', (req, res) => {
+            
         })
     })
     .catch((err) => console.log(err));
