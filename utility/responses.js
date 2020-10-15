@@ -10,8 +10,10 @@ const objectResponse = (res, code, object) => {
     res.end(JSON.stringify(object));
 }
 
-const headResponse = (res, code) => {
-    res.writeHead(code);
+const headResponse = (res, Version, CompareVersion) => {
+    let code = 200;
+    (Version == CompareVersion) ? code = 304: code == 200;
+    res.writeHead(code, {'ETag': Version});
     res.end();
 }
 

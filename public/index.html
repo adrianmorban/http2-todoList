@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List HTTP2</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>TODO LIST</h1>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#crearTask">
+            Crear
+        </button>
+        <button type="button" class="btn btn-secondary" id="updateList">
+            Actualizar Tareas
+        </button>
+        <div class="modal fade" id="crearTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Crear nueva tarea</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form id="crearTarea">
+                        <div class="form-group">
+                            <label for="Description">Description</label>
+                            <input class="form-control" required="required" type="text" id="Description" placeholder="Description">
+                        </div>
+                        <div class="form-group">
+                            <label for="dueDate">Due Date</label>
+                            <input class="form-control" pattern="([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))" required="required" type="text" id="dueDate" placeholder="YYYY/mm/DD">
+                        </div>   
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select class="form-control" id="Status">
+                                <option>Pending</option>
+                                <option>Complete</option>
+                            </select>
+                        </div>  
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="modal fade" id="actualizarTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Actualizar tarea</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form id="guardarAct">
+                        <div class="form-group">
+                            <label for="DescriptionAct">Description</label>
+                            <input class="form-control" required="required" type="text" id="DescriptionAct" placeholder="Description">
+                        </div>
+                        <div class="form-group">
+                            <label for="dueDateAct">Due Date</label>
+                            <input class="form-control" pattern="([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))" required="required" type="text" id="dueDateAct" placeholder="YYYY/mm/DD">
+                        </div>   
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select class="form-control" id="StatusAct">
+                                <option>Pending</option>
+                                <option>Complete</option>
+                            </select>
+                        </div>  
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="listContainer" id="listContainer">
+            <table class="table" id='table'>
+                <tbody id='body'>
+                    <tr id='atributos'>
+                        <th>ID</th>
+                        <th>Description</th>
+                        <th>Due date</th>
+                        <th>Status</th>
+                        <th>Action<th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="jquery-3.5.1.slim.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>

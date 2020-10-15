@@ -1,9 +1,9 @@
-const {objectResponse} = require('../utility/responses');
+const {headResponse} = require('../utility/responses');
 const {getLastVersion} = require('../utility/versions');
 
-const headHandler = (taskModel, data, res, id) => {
+const headHandler = (res, req) => {
     getLastVersion().then((version) => {
-        
+        headResponse(res, version.lastVersion, req.headers['if-none-match']);
     })
 }
 

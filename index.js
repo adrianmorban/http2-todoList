@@ -9,6 +9,7 @@ const {postHandler} = require('./handlers/postHandler');
 const {putHandler} = require('./handlers/putHandler');
 const {deleteHandler} = require('./handlers/deleteHandler');
 const {patchHandler} = require('./handlers/patchHandler');
+const {headHandler} = require('./handlers/headHandler')
 
 //require configs
 const {Connection} = require('./config/connectDB');
@@ -16,7 +17,9 @@ const {TaskSchema} = require('./models/tasks');
 const {createFirstVersion, getVersionModel} = require('./models/version');
 
 const app = express();
+app.use(express.static('public'));
 
+app.set('etag','weak');
 //Connection options
 const options = {
     key: fs.readFileSync('./certs/server.key'),
@@ -36,9 +39,10 @@ const Conectar = new Connection('todolist', TaskSchema);
 Conectar.Connect()
     .then((taskModel) => {
 
-        //GET
+        //GET && HEAD
         app.get('/api/tasks',(req, res) => {
-            getAllTasks(taskModel, res)
+            if(req.method === 'GET') getAllTasks(taskModel, res)
+            if(req.method === 'HEAD') headHandler(res, req);
         });
 
         //GET ONE
@@ -78,14 +82,6 @@ Conectar.Connect()
                 patchHandler(taskModel, data, res, id);
             });
         });
-
-        app.head('/api/tasks', (req, res) => {
-
-        });
-
-        app.head('/api/task/:id', (req, res) => {
-            
-        })
     })
     .catch((err) => console.log(err));
 
